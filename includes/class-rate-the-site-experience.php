@@ -157,6 +157,7 @@ class Rate_The_Site_Experience {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		# add admin dashboard widget
 		$this->loader->add_action( 'wp_dashboard_setup', $plugin_admin, 'rtse_add_dashboard_widgets' );
 		# add admin menu
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'rtse_dashboard_admin_menu' );
@@ -176,8 +177,12 @@ class Rate_The_Site_Experience {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+		# create table on init
 		$this->loader->add_action( 'init', $plugin_public, 'rtse_create_table_for_rtse_details' );
+		# Add widget to footer
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'rtse_wp_footer' );
+		# save rating data to dashboard
 		$this->loader->add_action( 'wp_ajax_nopriv_rtse_save_ratings', $plugin_public, 'rtse_save_ratings_callback' );
 		$this->loader->add_action( 'wp_ajax_rtse_save_ratings', $plugin_public, 'rtse_save_ratings_callback' );
 

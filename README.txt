@@ -9,14 +9,16 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin add a Widget on frontend to get rating of use experience of site visiting.
+This plugin adds a frontend widget for users to rate their site experience.
 
 == Description ==
 
-This plugin add a Widget on frontend to get rating of use experience of site visiting.
+This plugin enhances user interaction by introducing a frontend widget that allows visitors to rate their experience on the site. Users can easily provide rating of the overall site usability.
 
 ### Features:
-* Add Widget to site for experience of site visit.
+* Addition of a frontend widget
+* Allows users to rate their site experience
+* Manage widget content
 
 == Installation ==
 

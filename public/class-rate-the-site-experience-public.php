@@ -206,7 +206,7 @@ class Rate_The_Site_Experience_Public {
 												$logo_img_src = $logo_img[0];
 												?>
 												<div class="rtse-rating-widget-logo">
-													<img src="<?php echo $logo_img_src; ?>" title="<?php _e('Rate the Site','rate-the-site-experience'); ?>" alt="<?php _e('Rate the Site','rate-the-site-experience'); ?>">
+													<img src="<?php echo esc_url($logo_img_src); ?>" title="<?php _e('Rate the Site','rate-the-site-experience'); ?>" alt="<?php _e('Rate the Site','rate-the-site-experience'); ?>">
 												</div>
 												<?php 
 											}
@@ -214,12 +214,12 @@ class Rate_The_Site_Experience_Public {
 										<?php 
 										if(!empty($heading))
 										{ ?>
-											<h2><?php echo $heading; ?></h2>
+											<h2><?php echo esc_html($heading); ?></h2>
 											<?php 
 										}
 										if(!empty($description))
 										{	?>
-											<p><?php echo $description; ?></p>
+											<p><?php echo esc_html($description); ?></p>
 											<?php 
 										}		
 										?>
@@ -243,12 +243,12 @@ class Rate_The_Site_Experience_Public {
 													<?php 
 													if(!empty($not_satisfied_text))
 													{	?>
-														<span class="rtse-color-red"><?php echo $not_satisfied_text; ?></span>
+														<span class="rtse-color-red"><?php echo esc_html($not_satisfied_text); ?></span>
 														<?php
 													} 
 													if(!empty($satisfied_text))
 													{ ?>
-														<span class="rtse-color-green"><?php echo $satisfied_text; ?></span>
+														<span class="rtse-color-green"><?php echo esc_html($satisfied_text); ?></span>
 														<?php 
 													} ?>
 
@@ -259,7 +259,7 @@ class Rate_The_Site_Experience_Public {
 									</div>
 									<div class="rtse-submit-btn">
 										<a href="javascript:void(0);" id="rtse-submit-btn">
-											<?php echo __($button_text,'rate-the-site-experience'); ?>
+											<?php echo __(esc_html($button_text),'rate-the-site-experience'); ?>
 										</a>
 									</div>
 									<div id="RTSEPleaseWaitMsgPopup">
@@ -281,11 +281,11 @@ class Rate_The_Site_Experience_Public {
 						<div class="rtse-success-widget" id="rtse-success-widget">
 							<div class="rtse-success-widget-inner">					
 								<div class="rtse-success-content">
-									<h2><?php echo __($heading,'rate-the-site-experience'); ?></h2>
+									<h2><?php echo __(esc_html($heading),'rate-the-site-experience'); ?></h2>
 									<?php 
 									if($content)
 									{ ?>
-										<p><?php echo __($content,'rate-the-site-experience'); ?></p>
+										<p><?php echo __(esc_html($content),'rate-the-site-experience'); ?></p>
 										<?php 
 									} ?>
 								</div>
@@ -332,7 +332,7 @@ class Rate_The_Site_Experience_Public {
 	 */
 	public function rtse_save_ratings_callback()
 	{
-		$ratings = isset($_POST["ratings"]) ? $_POST["ratings"] : '';
+		$ratings = isset($_POST["ratings"]) ? sanitize_text_field($_POST["ratings"]) : '';
 		$status = 'error';
 		$msg = 'Something went wrong!';
 		if(!empty($ratings))
@@ -345,11 +345,11 @@ class Rate_The_Site_Experience_Public {
 			global $wpdb;
 			$table_name = $wpdb->prefix . "rtse_details";
 
-			$result_check = $wpdb->insert($table_name, array(
-				'ratings' => $ratings,
-				'datetime' => $datetime,
-				'ip_address' => $ip_address,
-				'extra_details' => $extra_details,
+			$result_check = $wpdb->insert(sanitize_text_field($table_name), array(
+				'ratings' => sanitize_text_field($ratings),
+				'datetime' => sanitize_text_field($datetime),
+				'ip_address' => sanitize_text_field($ip_address),
+				'extra_details' => sanitize_text_field($extra_details),
 			));
 			if($result_check)
 			{

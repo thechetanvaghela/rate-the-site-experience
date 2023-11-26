@@ -109,6 +109,11 @@ class Rate_The_Site_Experience_Admin {
 		wp_add_dashboard_widget('rtse_download_rating_widget', 'Rate the Site Experience', array($this,'rtse_download_ratings_function'));
 	}
 
+	/**
+	 * Download rating sheet
+	 *
+	 * @since    1.0.0
+	 */
 	public function rtse_download_ratings_function( $post, $callback_args ) 
 	{
 		$download_path = $message = '';
@@ -164,18 +169,7 @@ class Rate_The_Site_Experience_Admin {
 			<?php 
 			if($download_path)
 			{
-				echo '<a id="rtse-download-rating-sheet" href="'.$download_path.'" download>'.__('Download','rate-the-site-experience').'</a>';
-				?>
-				<style>
-					#rtse-download-rating-sheet
-					{
-						display:none;
-					}
-				</style>
-				<script>
-					document.getElementById('rtse-download-rating-sheet').click();
-				</script>
-				<?php
+				echo '<a id="rtse-download-rating-sheet" href="'.esc_url($download_path).'" download>'.__('Download','rate-the-site-experience').'</a>';
 			} 
 			?>
 		</form>
@@ -196,7 +190,7 @@ class Rate_The_Site_Experience_Admin {
 			# submit form acrion
 			if (isset($_POST['rtse-save-form-settings'])) {
 				# verifing nonce
-				if ( ! isset( $_POST['rtse_dashboard_field_nonce'] ) || ! wp_verify_nonce( $_POST['rtse_dashboard_field_nonce'], 'rtse_dashboard_action_nonce' ) ) {
+				if ( ! isset( $_POST['rtse_dashboard_field_nonce'] ) || ! wp_verify_nonce(sanitize_text_field(wp_unslash( $_POST['rtse_dashboard_field_nonce'])), 'rtse_dashboard_action_nonce' ) ) {
 					# form data not saved message
 					$form_msg = '<b style="color:red;">Sorry, your nonce did not verify.</b>';
 				} else {
@@ -216,17 +210,20 @@ class Rate_The_Site_Experience_Admin {
 					
 						
 						if (isset($_POST['rtse-widget-settings']) && !empty($_POST['rtse-widget-settings'])) {
-							$rtse_widget_post_settings = $_POST['rtse-widget-settings'];
+							$rtse_widget_post_settings = !empty( $_POST['rtse-widget-settings'] ) ? (array) $_POST['rtse-widget-settings'] : array();
+							$rtse_widget_post_settings = array_map( 'esc_attr', $rtse_widget_post_settings );
 							update_option('rtse-widget-settings', $rtse_widget_post_settings);
 						}
 						
 						if (isset($_POST['rtse-widget-content']) && !empty($_POST['rtse-widget-content'])) {
-							$rtse_widget_post_content = $_POST['rtse-widget-content'];
+							$rtse_widget_post_content = !empty( $_POST['rtse-widget-content'] ) ? (array) $_POST['rtse-widget-content'] : array();
+							$rtse_widget_post_content = array_map( 'esc_attr', $rtse_widget_post_content );
 							update_option('rtse-widget-content', $rtse_widget_post_content);
 						}
 						
 						if (isset($_POST['rtse-thankyou-widget-content']) && !empty($_POST['rtse-thankyou-widget-content'])) {
-							$rtse_thankyou_widget_post_content = $_POST['rtse-thankyou-widget-content'];
+							$rtse_thankyou_widget_post_content = !empty( $_POST['rtse-thankyou-widget-content'] ) ? (array) $_POST['rtse-thankyou-widget-content'] : array();
+							$rtse_thankyou_widget_post_content = array_map( 'esc_attr', $rtse_thankyou_widget_post_content );
 							update_option('rtse-thankyou-widget-content', $rtse_thankyou_widget_post_content);
 						}
 
@@ -253,7 +250,7 @@ class Rate_The_Site_Experience_Admin {
 										}
 										else 
 										{
-											update_option('rtse-widget-content-logo', $logn_attachment_id);
+											update_option('rtse-widget-content-logo', sanitize_text_field($logn_attachment_id));
 										}
 									}
 									else
@@ -317,7 +314,7 @@ class Rate_The_Site_Experience_Admin {
 				<div id="rtse-body">
 					<div id="rtse-body-content">
 						<div class="">
-							<br/><?php _e($form_msg,'rate-the-site-experience'); ?><hr/><br/>
+							<br/><?php echo wp_kses_post($form_msg); ?><hr/><br/>
 							<form method="post" enctype="multipart/form-data">
 								<!-- Enable Site experience -->
 								<table>
@@ -327,12 +324,12 @@ class Rate_The_Site_Experience_Admin {
 										<td>	
 											<?php $yes_checked = ($enable_widget == "yes") ? 'checked="checked"' : "";?>
 											<?php $no_checked = ($enable_widget == "no") ? 'checked="checked"' : "";?>
-											<input type="radio" name="rtse-enable" id="enable-yes" value="yes" <?php echo $yes_checked; ?> ><label for="enable-yes"><?php _e('Yes','rate-the-site-experience'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
-											<input type="radio" name="rtse-enable" id="enable-no" value="no" <?php echo $no_checked; ?>><label for="enable-no"><?php _e('No','rate-the-site-experience'); ?></label>
+											<input type="radio" name="rtse-enable" id="enable-yes" value="yes" <?php echo esc_attr($yes_checked); ?> ><label for="enable-yes"><?php _e('Yes','rate-the-site-experience'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
+											<input type="radio" name="rtse-enable" id="enable-no" value="no" <?php echo esc_attr($no_checked); ?>><label for="enable-no"><?php _e('No','rate-the-site-experience'); ?></label>
 										</td>
 									</tr>
 								</table>
-								<span>Enable Site Rating experience.</span>
+								<span><?php _e('Enable Site Rating experience.','rate-the-site-experience'); ?></span>
 								<br/><hr><br/>
 								<!-- Enable Site experience end -->
 								<?php 
@@ -352,29 +349,29 @@ class Rate_The_Site_Experience_Admin {
 											<td>	
 												<?php $frontpage_checked = ($enable_widget_on_page == "front") ? 'checked="checked"' : "";?>
 												<?php $allpages_checked = ($enable_widget_on_page == "all") ? 'checked="checked"' : "";?>
-												<input type="radio" name="rtse-enable-pages" id="enable-frontpage" value="front" <?php echo $frontpage_checked; ?> ><label for="enable-frontpage"><?php _e('Front Page','rate-the-site-experience'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
-												<input type="radio" name="rtse-enable-pages" id="enable-allpages" value="all" <?php echo $allpages_checked; ?>><label for="enable-allpages"><?php _e('All Pages','rate-the-site-experience'); ?></label>
+												<input type="radio" name="rtse-enable-pages" id="enable-frontpage" value="front" <?php echo esc_attr($frontpage_checked); ?> ><label for="enable-frontpage"><?php _e('Front Page','rate-the-site-experience'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
+												<input type="radio" name="rtse-enable-pages" id="enable-allpages" value="all" <?php echo esc_attr($allpages_checked); ?>><label for="enable-allpages"><?php _e('All Pages','rate-the-site-experience'); ?></label>
 											</td>
 										</tr>
 
 										<tr valign="top">
 												<th scope="row"><label for="rtse-widget-settings-sto"><?php _e('Seconds to open','rate-the-site-experience'); ?></label></th>
 												<td>
-													<input type="number" name="rtse-widget-settings[seconds_to_open]" id="rtse-widget-settings-sto" value="<?php echo esc_html($seconds_to_open); ?>" />
+													<input type="number" name="rtse-widget-settings[seconds_to_open]" id="rtse-widget-settings-sto" value="<?php echo esc_attr($seconds_to_open); ?>" />
 													<span><?php _e('Set a seconds to open a widget after page load.','rate-the-site-experience'); ?></span>
 												</td>
 											</tr>
 											<tr valign="top">
 												<th scope="row"><label for="rtse-widget-settings-nods"><?php _e('Number of Days Submit','rate-the-site-experience'); ?></label></th>
 												<td>
-													<input type="number" name="rtse-widget-settings[number_of_days_submit]" id="rtse-widget-settings-nods" value="<?php echo esc_html($number_of_days_submit); ?>" />
+													<input type="number" name="rtse-widget-settings[number_of_days_submit]" id="rtse-widget-settings-nods" value="<?php echo esc_attr($number_of_days_submit); ?>" />
 													<span><?php _e('set a number of day to display widget after submited.','rate-the-site-experience'); ?></span>
 												</td>
 											</tr>
 											<tr valign="top">
 												<th scope="row"><label for="rtse-widget-settings-nodd"><?php _e('Number of Days Decline','rate-the-site-experience'); ?></label></th>
 												<td>
-													<input type="number" name="rtse-widget-settings[number_of_days_decline]" id="rtse-widget-settings-nodd" value="<?php echo esc_html($number_of_days_decline); ?>" />
+													<input type="number" name="rtse-widget-settings[number_of_days_decline]" id="rtse-widget-settings-nodd" value="<?php echo esc_attr($number_of_days_decline); ?>" />
 													<span><?php _e('set a number of day to display widget after declined.','rate-the-site-experience'); ?></span>
 												</td>
 											</tr>
@@ -393,14 +390,14 @@ class Rate_The_Site_Experience_Admin {
 													if(!empty($rtse_logo_image_id))
 													{ 	
 														$logo_img = wp_get_attachment_image_src($rtse_logo_image_id);
-														if(!empty($logo_img[0]))
+														if(isset($logo_img[0]) && !empty($logo_img[0]))
 														{
 															$logo_img_src = $logo_img[0];
 															$logo_select_image_wrap = 'display:none;';
 														}
 													}  
 													?>
-													<div class="rtse-logo-img-select-wrap" style="<?php echo $logo_select_image_wrap; ?>">
+													<div class="rtse-logo-img-select-wrap" style="<?php echo esc_attr($logo_select_image_wrap); ?>">
 														<input type="file" name="rtse-widget-content-logo" class="rtse-widget-content-logo" accept="image/png, image/gif, image/jpeg">
 													</div>
 													<?php
