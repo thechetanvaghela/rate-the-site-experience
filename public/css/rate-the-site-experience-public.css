@@ -1,0 +1,230 @@
+.rtse-rating-widget {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    padding: 0 15px;
+    padding-bottom: 20px;
+    visibility: hidden;
+    opacity: 0;
+    z-index: -1;
+  }
+  .rtse-rating-widget.open {
+    visibility: visible;
+    opacity: 1;
+    z-index: 9;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner {
+    max-width: 800px;
+    width: 100%;
+    background-color: #fff;
+    position: relative;
+    border: 2px solid white;
+    border-radius: 10px;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content {
+    padding: 45px 15px 15px;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content .rtse-rating-widget-logo {
+    text-align: center;
+    line-height: 1;
+    padding-bottom: 15px;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content .rtse-rating-widget-logo img {
+    max-width: 80px;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 28px;
+  }
+  @media screen and (max-width: 767px) {
+    .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content p {
+    text-align: center;
+    line-height: 1.4;
+    margin-bottom: 15px;
+  }
+  @media screen and (max-width: 767px) {
+    .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content p {
+      font-size: 14px;
+    }
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content .li-rtse-satisfied {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content ul.active li {
+    background-color: #78f889;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content ul li {
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    background-color: transparent;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content ul li:not(:last-child) {
+    margin-right: 5px;
+  }
+  @media screen and (max-width: 767px) {
+    .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content ul li {
+      font-size: 14px;
+    }
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content ul li.active ~ li {
+    background-color: #e5e5e5;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-submit-btn {
+    text-align: center;
+    padding: 15px 0;
+    border-top: 1px solid rgba(102, 102, 102, 0.3);
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-submit-btn a {
+    padding: 7px 15px;
+    color: #000000;
+    display: inline-block;
+    line-height: 1.4;
+    pointer-events: none;
+    background-color: #e5e5e5;
+    color: #0000005c;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-submit-btn a.enable {
+    background-color: #78f889;
+    color: #323e48;
+    pointer-events: unset;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-submit-btn a.enable:hover {
+    background-color: #323e48;
+    color: #78f889;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-rating-widget-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-rating-widget-close-btn:hover svg path {
+    fill: #000000;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-rating-widget-close-btn svg {
+    width: 100%;
+    height: 100%;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-rating-widget-close-btn svg rect {
+    fill: transparent;
+  }
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-rating-widget-close-btn svg path {
+    fill: #78f889;
+    transition: all 0.3s ease;
+  }
+  
+  .rtse-rating-widget .rtse-rating-widget-inner .rtse-satiedfied-texts {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+  }
+
+  .rtse-rating-widget  .rtse-color-red {
+    color: red; }
+  
+  .rtse-rating-widget .rtse-color-green {
+    color: green; }
+
+    #RTSEPleaseWaitMsgPopup
+    {
+      text-align: center;
+      padding-bottom: 10px;
+    }
+
+  .rtse-success-widget {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    visibility: hidden;
+  }
+  .rtse-success-widget.open {
+    visibility: visible;
+    opacity: 1;
+    z-index: 9;
+  }
+  .rtse-success-widget .rtse-success-widget-inner {
+    max-width: 500px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    position: relative;
+    text-align: center;
+  }
+  .rtse-success-widget .rtse-success-widget-inner h2 {
+    font-weight: 500;
+    font-size: 29px;
+    margin-bottom: 15px;
+    padding-top: 15px;
+  }
+  @media screen and (max-width: 767px) {
+    .rtse-success-widget .rtse-success-widget-inner h2 {
+      font-size: 24px;
+    }
+  }
+  .rtse-success-widget .rtse-success-widget-inner p {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 767px) {
+    .rtse-success-widget .rtse-success-widget-inner p {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+  }
+  .rtse-success-widget .rtse-success-widget-inner .rtse-sucess-content {
+    padding: 15px;
+  }
+  .rtse-success-widget .rtse-success-widget-inner .rtse-widget-success-close-btn {
+    text-align: center;
+    padding: 15px 0;
+    border-top: 1px solid rgba(102, 102, 102, 0.3);
+  }
+  .rtse-success-widget .rtse-success-widget-inner .rtse-widget-success-close-btn span {
+    padding: 7px 20px;
+    display: inline-block;
+    line-height: 1.4;
+    cursor: pointer;
+    background-color: #78f889;
+    color: #323e48;
+    border-radius: 5px;
+  }
+  .rtse-success-widget .rtse-success-widget-inner .rtse-widget-success-close-btn span:hover {
+    background-color: #323e48;
+    color: #78f889;
+  }
+  
