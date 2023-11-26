@@ -157,7 +157,24 @@ class Rate_The_Site_Experience_Public {
 		
 		if(!empty($enable_widget) && $enable_widget == "yes")
 		{
-			if(!empty($rtse_widget_content) && is_front_page())
+			$enable_widget_on_page = esc_attr(get_option('rtse-enable-pages'));
+			$enable_widget_on_page = !empty($enable_widget_on_page) ? $enable_widget_on_page : "front";
+			
+			$show_on_all = false;
+			if($enable_widget_on_page == "front" && is_front_page())
+			{
+				$show_on_all = true;
+			}
+			else if($enable_widget_on_page == "all")
+			{
+				$show_on_all = true;
+			}
+			else
+			{
+				$show_on_all = false;
+			}
+
+			if(!empty($rtse_widget_content) && $show_on_all)
 			{ 
 				if(!isset($_COOKIE['rtse-hide-rating-widget']) || $_COOKIE['rtse-hide-rating-widget'] == 0 )
 				{
@@ -165,11 +182,11 @@ class Rate_The_Site_Experience_Public {
 					{
 						$heading = isset($rtse_widget_content['heading']) ? $rtse_widget_content['heading'] : '';
 						$description = isset($rtse_widget_content['description']) ? $rtse_widget_content['description'] : '';
-						$button_text = isset($rtse_widget_content['button_text']) ? $rtse_widget_content['button_text'] : 'Submit';
+						$button_text = isset($rtse_widget_content['button_text']) && !empty($rtse_widget_content['button_text']) ? $rtse_widget_content['button_text'] : 'Submit';
 						$not_satisfied_text = isset($rtse_widget_content['not_satisfied_text']) ? $rtse_widget_content['not_satisfied_text'] :'';
 						$satisfied_text = isset($rtse_widget_content['satisfied_text']) ? $rtse_widget_content['satisfied_text'] :'';
 
-						if(!empty($heading) || !empty($description) || !empty($not_satisfied_text)|| !empty($satisfied_text)|| !empty($rtse_logo_image_id)|| !empty($button_text))
+						if(!empty($heading) || !empty($description) || !empty($not_satisfied_text)|| !empty($satisfied_text)|| !empty($rtse_logo_image_id) || !empty($button_text))
 						{	?>
 							<div class="rtse-rating-widget" id="rtse-rating-widget">
 								<div class="rtse-rating-widget-inner">

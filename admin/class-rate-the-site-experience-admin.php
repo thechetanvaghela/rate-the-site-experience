@@ -206,73 +206,80 @@ class Rate_The_Site_Experience_Admin {
 						$enable_value = !empty($enable_value) ? $enable_value : "no";
 						# update Enable comment value option value
 						update_option('rtse-enable', $enable_value);
-					}
 
-					if (isset($_POST['rtse-widget-settings']) && !empty($_POST['rtse-widget-settings'])) {
-						$rtse_widget_post_settings = $_POST['rtse-widget-settings'];
-						update_option('rtse-widget-settings', $rtse_widget_post_settings);
-					}
+						if (isset($_POST['rtse-enable-pages'])) {
+							$enable_on = sanitize_text_field($_POST['rtse-enable-pages']);
+							$enable_on = !empty($enable_on) ? $enable_on : "front";
+							# update Enable comment value option value
+							update_option('rtse-enable-pages', $enable_on);
+						}
 					
-					if (isset($_POST['rtse-widget-content']) && !empty($_POST['rtse-widget-content'])) {
-						$rtse_widget_post_content = $_POST['rtse-widget-content'];
-						update_option('rtse-widget-content', $rtse_widget_post_content);
-					}
-					
-					if (isset($_POST['rtse-thankyou-widget-content']) && !empty($_POST['rtse-thankyou-widget-content'])) {
-						$rtse_thankyou_widget_post_content = $_POST['rtse-thankyou-widget-content'];
-						update_option('rtse-thankyou-widget-content', $rtse_thankyou_widget_post_content);
-					}
+						
+						if (isset($_POST['rtse-widget-settings']) && !empty($_POST['rtse-widget-settings'])) {
+							$rtse_widget_post_settings = $_POST['rtse-widget-settings'];
+							update_option('rtse-widget-settings', $rtse_widget_post_settings);
+						}
+						
+						if (isset($_POST['rtse-widget-content']) && !empty($_POST['rtse-widget-content'])) {
+							$rtse_widget_post_content = $_POST['rtse-widget-content'];
+							update_option('rtse-widget-content', $rtse_widget_post_content);
+						}
+						
+						if (isset($_POST['rtse-thankyou-widget-content']) && !empty($_POST['rtse-thankyou-widget-content'])) {
+							$rtse_thankyou_widget_post_content = $_POST['rtse-thankyou-widget-content'];
+							update_option('rtse-thankyou-widget-content', $rtse_thankyou_widget_post_content);
+						}
 
-					if (isset($_FILES['rtse-widget-content-logo']) && !empty($_FILES['rtse-widget-content-logo'])) 
-					{	
-						if(empty($_FILES['rtse-widget-content-logo']['error']))
-						{
-							if(current_user_can('upload_files')) 
+						if (isset($_FILES['rtse-widget-content-logo']) && !empty($_FILES['rtse-widget-content-logo'])) 
+						{	
+							if(empty($_FILES['rtse-widget-content-logo']['error']))
 							{
-								$mimeType = ['png','gif','jpg','jpeg'];
-								$filename = $_FILES['rtse-widget-content-logo']['name'];
-								$temp = explode(".", $filename);
-								$extension = end($temp);
-								if(in_array($extension,$mimeType) )
+								if(current_user_can('upload_files')) 
 								{
-									require_once( ABSPATH . 'wp-admin/includes/image.php' );
-									require_once( ABSPATH . 'wp-admin/includes/file.php' );
-									require_once( ABSPATH . 'wp-admin/includes/media.php' );
-									$logn_attachment_id = media_handle_upload('rtse-widget-content-logo', 0);
-										
-									if (is_wp_error($logn_attachment_id)) 
+									$mimeType = ['png','gif','jpg','jpeg'];
+									$filename = $_FILES['rtse-widget-content-logo']['name'];
+									$temp = explode(".", $filename);
+									$extension = end($temp);
+									if(in_array($extension,$mimeType) )
 									{
-										$form_msg = '<b style="color:red;">Sorry, error in uploading media.</b><br/>';
+										require_once( ABSPATH . 'wp-admin/includes/image.php' );
+										require_once( ABSPATH . 'wp-admin/includes/file.php' );
+										require_once( ABSPATH . 'wp-admin/includes/media.php' );
+										$logn_attachment_id = media_handle_upload('rtse-widget-content-logo', 0);
+											
+										if (is_wp_error($logn_attachment_id)) 
+										{
+											$form_msg = '<b style="color:red;">Sorry, error in uploading media.</b><br/>';
+										}
+										else 
+										{
+											update_option('rtse-widget-content-logo', $logn_attachment_id);
+										}
 									}
-									else 
+									else
 									{
-										update_option('rtse-widget-content-logo', $logn_attachment_id);
+										$form_msg = '<b style="color:red;">Sorry, You can not upload this extension media.</b><br/>';
 									}
 								}
 								else
 								{
-									$form_msg = '<b style="color:red;">Sorry, You can not upload this extension media.</b><br/>';
+									$form_msg = '<b style="color:red;">Sorry, You do not have permission to upload media.</b><br/>';
 								}
 							}
 							else
 							{
-								$form_msg = '<b style="color:red;">Sorry, You do not have permission to upload media.</b><br/>';
+								update_option('rtse-widget-content-logo', '');
 							}
 						}
 						else
 						{
 							update_option('rtse-widget-content-logo', '');
 						}
+						if(isset($_POST['rtse-logo-img-id']) && !empty($_POST['rtse-logo-img-id']))
+						{
+							update_option('rtse-widget-content-logo', sanitize_text_field($_POST['rtse-logo-img-id']));
+						}
 					}
-					else
-					{
-						update_option('rtse-widget-content-logo', '');
-					}
-					if(isset($_POST['rtse-logo-img-id']) && !empty($_POST['rtse-logo-img-id']))
-	            	{
-	            		update_option('rtse-widget-content-logo', sanitize_text_field($_POST['rtse-logo-img-id']));
-	            	}
-					
 					# form data saved message
 					$form_msg = '<b style="color:green;">Settings Saved.</b><br/>';
 				}
@@ -282,6 +289,9 @@ class Rate_The_Site_Experience_Admin {
 		$enable_widget = esc_attr(get_option('rtse-enable'));
 		$get_enable_widget = !empty($enable_widget) ? $enable_widget : "no";
 		
+		$enable_widget_on_page = esc_attr(get_option('rtse-enable-pages'));
+		$enable_widget_on_page = !empty($enable_widget_on_page) ? $enable_widget_on_page : "front";
+
 		$rtse_logo_image_id = esc_attr(get_option('rtse-widget-content-logo'));
 
 		$rtse_widget_settings = get_option('rtse-widget-settings');
@@ -326,12 +336,27 @@ class Rate_The_Site_Experience_Admin {
 								<br/><hr><br/>
 								<!-- Enable Site experience end -->
 								<?php 
+								$enable_setting_wrap = 'display:none;';
 								if(!empty($enable_widget) && $enable_widget == "yes")
 								{
-									?>
+									$enable_setting_wrap = '';
+								}
+								?>
+								<div id="rtse-widget-setting-wrap"  style="<?php echo $enable_setting_wrap; ?>">
 									<!-- widget content -->
 									<h3><?php _e('Widget Setting','rate-the-site-experience'); ?></h3>
 									<table>
+										<tr valign="top">
+											<th scope="row">
+												<label for="rtse-enable-pages"><?php _e('Show widget on','rate-the-site-experience'); ?></label></th>
+											<td>	
+												<?php $frontpage_checked = ($enable_widget_on_page == "front") ? 'checked="checked"' : "";?>
+												<?php $allpages_checked = ($enable_widget_on_page == "all") ? 'checked="checked"' : "";?>
+												<input type="radio" name="rtse-enable-pages" id="enable-frontpage" value="front" <?php echo $frontpage_checked; ?> ><label for="enable-frontpage"><?php _e('Front Page','rate-the-site-experience'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
+												<input type="radio" name="rtse-enable-pages" id="enable-allpages" value="all" <?php echo $allpages_checked; ?>><label for="enable-allpages"><?php _e('All Pages','rate-the-site-experience'); ?></label>
+											</td>
+										</tr>
+
 										<tr valign="top">
 												<th scope="row"><label for="rtse-widget-settings-sto"><?php _e('Seconds to open','rate-the-site-experience'); ?></label></th>
 												<td>
@@ -442,9 +467,7 @@ class Rate_The_Site_Experience_Admin {
 												</td>
 											</tr>
 									</table>
-									<?php
-								}
-								?>
+								</div>
 
 								<br/><hr>
 
