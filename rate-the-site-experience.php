@@ -41,7 +41,7 @@ define( 'RATE_THE_SITE_EXPERIENCE_VERSION', '1.0.0' );
  * The code that runs during plugin activation.
  * This action is documented in includes/class-rate-the-site-experience-activator.php
  */
-function activate_rate_the_site_experience() {
+function rtse_activate_rate_the_site_experience() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-rate-the-site-experience-activator.php';
 	Rate_The_Site_Experience_Activator::activate();
 }
@@ -50,13 +50,13 @@ function activate_rate_the_site_experience() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-rate-the-site-experience-deactivator.php
  */
-function deactivate_rate_the_site_experience() {
+function rtse_deactivate_rate_the_site_experience() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-rate-the-site-experience-deactivator.php';
 	Rate_The_Site_Experience_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_rate_the_site_experience' );
-register_deactivation_hook( __FILE__, 'deactivate_rate_the_site_experience' );
+register_activation_hook( __FILE__, 'rtse_activate_rate_the_site_experience' );
+register_deactivation_hook( __FILE__, 'rtse_deactivate_rate_the_site_experience' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -73,10 +73,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-rate-the-site-experience.p
  *
  * @since    1.0.0
  */
-function run_rate_the_site_experience() {
+function rtse_run_rate_the_site_experience() {
 
 	$plugin = new Rate_The_Site_Experience();
 	$plugin->run();
 
 }
-run_rate_the_site_experience();
+rtse_run_rate_the_site_experience();

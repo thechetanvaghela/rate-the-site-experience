@@ -259,7 +259,8 @@ class Rate_The_Site_Experience_Public {
 									</div>
 									<div class="rtse-submit-btn">
 										<a href="javascript:void(0);" id="rtse-submit-btn">
-											<?php echo __(esc_html($button_text),'rate-the-site-experience'); ?>
+										<?php wp_nonce_field( 'rtse_save_rating', 'rtse_save_rating_nonce' ); ?>
+											<?php printf( esc_html__( '%s.', 'rate-the-site-experience' ),esc_html($button_text)); ?>
 										</a>
 									</div>
 									<div id="RTSEPleaseWaitMsgPopup">
@@ -281,15 +282,15 @@ class Rate_The_Site_Experience_Public {
 						<div class="rtse-success-widget" id="rtse-success-widget">
 							<div class="rtse-success-widget-inner">					
 								<div class="rtse-success-content">
-									<h2><?php echo __(esc_html($heading),'rate-the-site-experience'); ?></h2>
+									<h2><?php printf( esc_html__( '%s.', 'rate-the-site-experience' ),esc_html($heading)); ?></h2>
 									<?php 
 									if($content)
 									{ ?>
-										<p><?php echo __(esc_html($content),'rate-the-site-experience'); ?></p>
+										<p><?php printf( esc_html__( '%s.', 'rate-the-site-experience' ),esc_html($content)); ?></p>
 										<?php 
 									} ?>
 								</div>
-								<div class="rtse-widget-success-close-btn"><span id="rtse-widget-success-close-btn"><?php echo __('Close','rate-the-site-experience'); ?></span></div>
+								<div class="rtse-widget-success-close-btn"><span id="rtse-widget-success-close-btn"><?php echo esc_html__('Close','rate-the-site-experience'); ?></span></div>
 							</div>
 						</div>
 						<?php
@@ -307,7 +308,10 @@ class Rate_The_Site_Experience_Public {
 	public function rtse_create_table_for_rtse_details() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . "rtse_details";
-		if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+		$sql = $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name );
+		$result = $wpdb->get_var( $sql );
+		if ($result != $table_name) 
+		{
 			$charset_collate = $wpdb->get_charset_collate();
 			$sql = "CREATE TABLE $table_name (
 					id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -332,6 +336,16 @@ class Rate_The_Site_Experience_Public {
 	 */
 	public function rtse_save_ratings_callback()
 	{
+
+		if ( ! isset( $_POST['rtse_save_rating_nonce'] ) || ! wp_verify_nonce( $_POST['rtse_save_rating_nonce'], 'rtse_save_rating' ) ) 
+		{
+			$return = array(
+				'status' => 'error',
+				'msg'  => 'Sorry, your nonce did not verify.'
+			);
+			echo wp_json_encode($return);
+			die();
+		}
 		$ratings = isset($_POST["ratings"]) ? sanitize_text_field($_POST["ratings"]) : '';
 		$status = 'error';
 		$msg = 'Something went wrong!';
@@ -361,7 +375,7 @@ class Rate_The_Site_Experience_Public {
 			'status' => $status,
 			'msg'  => $msg
 		);
-		echo json_encode($return);
+		echo wp_json_encode($return);
 		die();
 	}
 }
@@ -370,20 +384,18 @@ class Rate_The_Site_Experience_Public {
 # get Client IP
 function rtse_get_client_ip() {
     $ipaddress = '';
-    if (isset($_SERVER['HTTP_CLIENT_IP']))
-        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-    else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    else if(isset($_SERVER['HTTP_X_FORWARDED']))
-        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-    else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
-        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-    else if(isset($_SERVER['HTTP_FORWARDED']))
-        $ipaddress = $_SERVER['HTTP_FORWARDED'];
-    else if(isset($_SERVER['REMOTE_ADDR']))
-        $ipaddress = $_SERVER['REMOTE_ADDR'];
-    else
-        $ipaddress = 'UNKNOWN';
-
-    return $ipaddress;
+    foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key)
+    {
+        if (array_key_exists($key, $_SERVER) === true)
+        {
+            foreach (array_map('trim', explode(',', $_SERVER[$key])) as $ip)
+            {
+                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false)
+                {
+                    return $ip;
+                }
+            }
+        }
+    }
+    //return $ipaddress;
 }

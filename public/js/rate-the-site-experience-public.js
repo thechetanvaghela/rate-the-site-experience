@@ -89,9 +89,10 @@ document.addEventListener("DOMContentLoaded", function(){
                     {
                         document.getElementById("RTSEPleaseWaitMsgPopup").style.display = 'block';
                         let ratings = rating_li.innerHTML;
+                        let rtse_save_rating_nonce = document.getElementById("rtse_save_rating_nonce").value
                         if(ratings)
                         {
-                            var str = '&ratings='+ratings+'&action=rtse_save_ratings';
+                            var str = '&ratings='+ratings+'&action=rtse_save_ratings&rtse_save_rating_nonce='+rtse_save_rating_nonce;
                             var request = new XMLHttpRequest();
                             request.onreadystatechange = function() {
                                 if (this.readyState == 4 && this.status == 200) {

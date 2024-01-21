@@ -119,10 +119,16 @@ class Rate_The_Site_Experience_Admin {
 		$download_path = $message = '';
 		if(isset($_POST['rtse-download-ratings-sheet-btn']) && !empty($_POST['rtse-download-ratings-sheet-btn']))
 		{
+			if ( ! isset( $_POST['rtse_download_sheet_nonce'] ) || ! wp_verify_nonce( $_POST['rtse_download_sheet_nonce'], 'rtse_download_sheet' ) ) 
+			{
+				print 'Sorry, your nonce did not verify.';
+				exit;
+			}
 			global $wpdb;
 			$table_name = $wpdb->prefix . "rtse_details";
 
-			$sql = "SELECT * FROM $table_name";
+			$sql = $wpdb->prepare( "SELECT * FROM $table_name " );
+			$result = $wpdb->get_results( $sql );
 			$result = $wpdb->get_results( $sql, 'ARRAY_A' );
 
 			$logText = '';
@@ -158,18 +164,19 @@ class Rate_The_Site_Experience_Admin {
 			}
 			else
 			{
-				$message = '<p style="color:red;text-align: center;border: 1px solid;">'.__('No records found for download','rate-the-site-experience').'</p>';
+				$message = '<p style="color:red;text-align: center;border: 1px solid;">'.esc_html__('No records found for download','rate-the-site-experience').'</p>';
 			}
 		}
 		?>
 		<form id="rtse-download-rating-form" method="post">
-			<p><?php echo __('Generate and download Ratings sheet.', 'rate-the-site-experience'); ?></p>
+			<p><?php esc_html_e('Generate and download Ratings sheet.', 'rate-the-site-experience'); ?></p>
+			<?php wp_nonce_field( 'rtse_download_sheet', 'rtse_download_sheet_nonce' ); ?>
 			<input type="submit" Class="button button-primary" id="rtse-download-ratings-sheet-btn" name="rtse-download-ratings-sheet-btn" value="Download">
 			<?php echo $message; ?>
 			<?php 
 			if($download_path)
 			{
-				echo '<a id="rtse-download-rating-sheet" href="'.esc_url($download_path).'" download>'.__('Download','rate-the-site-experience').'</a>';
+				echo '<a id="rtse-download-rating-sheet" href="'.esc_url($download_path).'" download>'.esc_html__('Download','rate-the-site-experience').'</a>';
 			} 
 			?>
 		</form>
@@ -210,19 +217,19 @@ class Rate_The_Site_Experience_Admin {
 					
 						
 						if (isset($_POST['rtse-widget-settings']) && !empty($_POST['rtse-widget-settings'])) {
-							$rtse_widget_post_settings = !empty( $_POST['rtse-widget-settings'] ) ? (array) $_POST['rtse-widget-settings'] : array();
+							$rtse_widget_post_settings = !empty( $_POST['rtse-widget-settings'] ) ? sanitize_array((array) $_POST['rtse-widget-settings']) : array();
 							$rtse_widget_post_settings = array_map( 'esc_attr', $rtse_widget_post_settings );
 							update_option('rtse-widget-settings', $rtse_widget_post_settings);
 						}
 						
 						if (isset($_POST['rtse-widget-content']) && !empty($_POST['rtse-widget-content'])) {
-							$rtse_widget_post_content = !empty( $_POST['rtse-widget-content'] ) ? (array) $_POST['rtse-widget-content'] : array();
+							$rtse_widget_post_content = !empty( $_POST['rtse-widget-content'] ) ? sanitize_array((array) $_POST['rtse-widget-content']) : array();
 							$rtse_widget_post_content = array_map( 'esc_attr', $rtse_widget_post_content );
 							update_option('rtse-widget-content', $rtse_widget_post_content);
 						}
 						
 						if (isset($_POST['rtse-thankyou-widget-content']) && !empty($_POST['rtse-thankyou-widget-content'])) {
-							$rtse_thankyou_widget_post_content = !empty( $_POST['rtse-thankyou-widget-content'] ) ? (array) $_POST['rtse-thankyou-widget-content'] : array();
+							$rtse_thankyou_widget_post_content = !empty( $_POST['rtse-thankyou-widget-content'] ) ? sanitize_array((array) $_POST['rtse-thankyou-widget-content']) : array();
 							$rtse_thankyou_widget_post_content = array_map( 'esc_attr', $rtse_thankyou_widget_post_content );
 							update_option('rtse-thankyou-widget-content', $rtse_thankyou_widget_post_content);
 						}
@@ -234,7 +241,7 @@ class Rate_The_Site_Experience_Admin {
 								if(current_user_can('upload_files')) 
 								{
 									$mimeType = ['png','gif','jpg','jpeg'];
-									$filename = $_FILES['rtse-widget-content-logo']['name'];
+									$filename = sanitize_file_name($_FILES['rtse-widget-content-logo']['name']);
 									$temp = explode(".", $filename);
 									$extension = end($temp);
 									if(in_array($extension,$mimeType) )
@@ -320,16 +327,16 @@ class Rate_The_Site_Experience_Admin {
 								<table>
 									<tr valign="top">
 										<th scope="row">
-											<label for="rtse-enable"><?php _e('Enable? &nbsp;&nbsp;&nbsp;','rate-the-site-experience'); ?></label></th>
+											<label for="rtse-enable"><?php esc_html_e('Enable? &nbsp;&nbsp;&nbsp;','rate-the-site-experience'); ?></label></th>
 										<td>	
 											<?php $yes_checked = ($enable_widget == "yes") ? 'checked="checked"' : "";?>
 											<?php $no_checked = ($enable_widget == "no") ? 'checked="checked"' : "";?>
-											<input type="radio" name="rtse-enable" id="enable-yes" value="yes" <?php echo esc_attr($yes_checked); ?> ><label for="enable-yes"><?php _e('Yes','rate-the-site-experience'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
-											<input type="radio" name="rtse-enable" id="enable-no" value="no" <?php echo esc_attr($no_checked); ?>><label for="enable-no"><?php _e('No','rate-the-site-experience'); ?></label>
+											<input type="radio" name="rtse-enable" id="enable-yes" value="yes" <?php echo esc_attr($yes_checked); ?> ><label for="enable-yes"><?php esc_html_e('Yes','rate-the-site-experience'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
+											<input type="radio" name="rtse-enable" id="enable-no" value="no" <?php echo esc_attr($no_checked); ?>><label for="enable-no"><?php esc_html_e('No','rate-the-site-experience'); ?></label>
 										</td>
 									</tr>
 								</table>
-								<span><?php _e('Enable Site Rating experience.','rate-the-site-experience'); ?></span>
+								<span><?php esc_html_e('Enable Site Rating experience.','rate-the-site-experience'); ?></span>
 								<br/><hr><br/>
 								<!-- Enable Site experience end -->
 								<?php 
@@ -341,38 +348,38 @@ class Rate_The_Site_Experience_Admin {
 								?>
 								<div id="rtse-widget-setting-wrap"  style="<?php echo $enable_setting_wrap; ?>">
 									<!-- widget content -->
-									<h3><?php _e('Widget Setting','rate-the-site-experience'); ?></h3>
+									<h3><?php esc_html_e('Widget Setting','rate-the-site-experience'); ?></h3>
 									<table>
 										<tr valign="top">
 											<th scope="row">
-												<label for="rtse-enable-pages"><?php _e('Show widget on','rate-the-site-experience'); ?></label></th>
+												<label for="rtse-enable-pages"><?php esc_html_e('Show widget on','rate-the-site-experience'); ?></label></th>
 											<td>	
 												<?php $frontpage_checked = ($enable_widget_on_page == "front") ? 'checked="checked"' : "";?>
 												<?php $allpages_checked = ($enable_widget_on_page == "all") ? 'checked="checked"' : "";?>
-												<input type="radio" name="rtse-enable-pages" id="enable-frontpage" value="front" <?php echo esc_attr($frontpage_checked); ?> ><label for="enable-frontpage"><?php _e('Front Page','rate-the-site-experience'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
-												<input type="radio" name="rtse-enable-pages" id="enable-allpages" value="all" <?php echo esc_attr($allpages_checked); ?>><label for="enable-allpages"><?php _e('All Pages','rate-the-site-experience'); ?></label>
+												<input type="radio" name="rtse-enable-pages" id="enable-frontpage" value="front" <?php echo esc_attr($frontpage_checked); ?> ><label for="enable-frontpage"><?php esc_html_e('Front Page','rate-the-site-experience'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;
+												<input type="radio" name="rtse-enable-pages" id="enable-allpages" value="all" <?php echo esc_attr($allpages_checked); ?>><label for="enable-allpages"><?php esc_html_e('All Pages','rate-the-site-experience'); ?></label>
 											</td>
 										</tr>
 
 										<tr valign="top">
-												<th scope="row"><label for="rtse-widget-settings-sto"><?php _e('Seconds to open','rate-the-site-experience'); ?></label></th>
+												<th scope="row"><label for="rtse-widget-settings-sto"><?php esc_html_e('Seconds to open','rate-the-site-experience'); ?></label></th>
 												<td>
 													<input type="number" name="rtse-widget-settings[seconds_to_open]" id="rtse-widget-settings-sto" value="<?php echo esc_attr($seconds_to_open); ?>" />
-													<span><?php _e('Set a seconds to open a widget after page load.','rate-the-site-experience'); ?></span>
+													<span><?php esc_html_e('Set a seconds to open a widget after page load.','rate-the-site-experience'); ?></span>
 												</td>
 											</tr>
 											<tr valign="top">
-												<th scope="row"><label for="rtse-widget-settings-nods"><?php _e('Number of Days Submit','rate-the-site-experience'); ?></label></th>
+												<th scope="row"><label for="rtse-widget-settings-nods"><?php esc_html_e('Number of Days Submit','rate-the-site-experience'); ?></label></th>
 												<td>
 													<input type="number" name="rtse-widget-settings[number_of_days_submit]" id="rtse-widget-settings-nods" value="<?php echo esc_attr($number_of_days_submit); ?>" />
-													<span><?php _e('set a number of day to display widget after submited.','rate-the-site-experience'); ?></span>
+													<span><?php esc_html_e('set a number of day to display widget after submited.','rate-the-site-experience'); ?></span>
 												</td>
 											</tr>
 											<tr valign="top">
 												<th scope="row"><label for="rtse-widget-settings-nodd"><?php _e('Number of Days Decline','rate-the-site-experience'); ?></label></th>
 												<td>
 													<input type="number" name="rtse-widget-settings[number_of_days_decline]" id="rtse-widget-settings-nodd" value="<?php echo esc_attr($number_of_days_decline); ?>" />
-													<span><?php _e('set a number of day to display widget after declined.','rate-the-site-experience'); ?></span>
+													<span><?php esc_html_e('set a number of day to display widget after declined.','rate-the-site-experience'); ?></span>
 												</td>
 											</tr>
 									</table>
@@ -380,10 +387,10 @@ class Rate_The_Site_Experience_Admin {
 									<br/><hr>
 
 									<!-- widget content -->
-									<h3><?php _e('Widget Content','rate-the-site-experience'); ?></h3>
+									<h3><?php esc_html_e('Widget Content','rate-the-site-experience'); ?></h3>
 									<table>
 											<tr valign="top">
-												<th scope="row"><label for="rtse-widget-logo"><?php _e('Logo ','rate-the-site-experience'); ?></label></th>
+												<th scope="row"><label for="rtse-widget-logo"><?php esc_html_e('Logo ','rate-the-site-experience'); ?></label></th>
 												<td>
 													<?php 
 													$logo_select_image_wrap = '';
@@ -408,7 +415,7 @@ class Rate_The_Site_Experience_Admin {
 															<img src="<?php echo esc_url($logo_img_src); ?>" class="rtse-logo-img-preview" width="100" height="100">
 															<input type="hidden" name="rtse-logo-img-id" value="<?php echo esc_attr($rtse_logo_image_id); ?>">
 															<br/>
-															<a href="javascript:void(0)" class="rtse-remove-btn rtse-remove-logo-img"><?php _e('Remove','rate-the-site-experience'); ?></a>
+															<a href="javascript:void(0)" class="rtse-remove-btn rtse-remove-logo-img"><?php esc_html_e('Remove','rate-the-site-experience'); ?></a>
 														</div>
 														<?php
 													}
@@ -416,31 +423,31 @@ class Rate_The_Site_Experience_Admin {
 												</td>
 											</tr>
 											<tr valign="top">
-												<th scope="row"><label for="rtse-widget-heading"><?php _e('Heading ','rate-the-site-experience'); ?></label></th>
+												<th scope="row"><label for="rtse-widget-heading"><?php esc_html_e('Heading ','rate-the-site-experience'); ?></label></th>
 												<td>
 													<input type="text" name="rtse-widget-content[heading]" id="rtse-widget-heading" value="<?php echo esc_html($widget_heading); ?>" />
 												</td>
 											</tr>
 											<tr valign="top">
-												<th scope="row"><label for="rtse-widget-description"><?php _e('Description ','rate-the-site-experience'); ?></label></th>
+												<th scope="row"><label for="rtse-widget-description"><?php esc_html_e('Description ','rate-the-site-experience'); ?></label></th>
 												<td>
 													<textarea name="rtse-widget-content[description]" id="rtse-widget-description"><?php echo esc_html($widget_description); ?></textarea>
 												</td>
 											</tr>
 											<tr valign="top">
-												<th scope="row"><label for="rtse-widget-button_text"><?php _e('Button Text','rate-the-site-experience'); ?></label></th>
+												<th scope="row"><label for="rtse-widget-button_text"><?php esc_html_e('Button Text','rate-the-site-experience'); ?></label></th>
 												<td>
 													<input type="text" name="rtse-widget-content[button_text]" id="rtse-widget-button_text" value="<?php echo esc_html($widget_button_text); ?>" />
 												</td>
 											</tr>
 											<tr valign="top">
-												<th scope="row"><label for="rtse-widget-satisfied_text"><?php _e('Satisfied Text','rate-the-site-experience'); ?></label></th>
+												<th scope="row"><label for="rtse-widget-satisfied_text"><?php esc_html_e('Satisfied Text','rate-the-site-experience'); ?></label></th>
 												<td>
 													<input type="text" name="rtse-widget-content[satisfied_text]" id="rtse-widget-satisfied_text" value="<?php echo esc_html($widget_satisfied_text); ?>" />
 												</td>
 											</tr>
 											<tr valign="top">
-												<th scope="row"><label for="rtse-widget-not_satisfied_text"><?php _e('Not Satisfied Text','rate-the-site-experience'); ?></label></th>
+												<th scope="row"><label for="rtse-widget-not_satisfied_text"><?php esc_html_e('Not Satisfied Text','rate-the-site-experience'); ?></label></th>
 												<td>
 													<input type="text" name="rtse-widget-content[not_satisfied_text]" id="rtse-widget-not_satisfied_text" value="<?php echo esc_html($widget_not_satisfied_text); ?>" />
 												</td>
@@ -449,16 +456,16 @@ class Rate_The_Site_Experience_Admin {
 									<!-- widget content end -->
 									<br/><hr>
 									<!-- widget content -->
-									<h3><?php _e('Thank you Content','rate-the-site-experience'); ?></h3>
+									<h3><?php esc_html_e('Thank you Content','rate-the-site-experience'); ?></h3>
 									<table>
 										<tr valign="top">
-												<th scope="row"><label for="rtse-thankyou-widget-heading"><?php _e('Heading ','rate-the-site-experience'); ?></label></th>
+												<th scope="row"><label for="rtse-thankyou-widget-heading"><?php esc_html_e('Heading ','rate-the-site-experience'); ?></label></th>
 												<td>
 													<input type="text" name="rtse-thankyou-widget-content[heading]" id="rtse-thankyou-widget-heading" value="<?php echo esc_html($thankyou_widget_heading); ?>" />
 												</td>
 											</tr>
 											<tr valign="top">
-												<th scope="row"><label for="rtse-thankyou-widget-description"><?php _e('Description ','rate-the-site-experience'); ?></label></th>
+												<th scope="row"><label for="rtse-thankyou-widget-description"><?php esc_html_e('Description ','rate-the-site-experience'); ?></label></th>
 												<td>
 													<textarea name="rtse-thankyou-widget-content[description]" id="rtse-thankyou-widget-description"><?php echo esc_html($thankyou_widget_description); ?></textarea>
 												</td>
