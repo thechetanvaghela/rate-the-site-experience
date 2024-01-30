@@ -119,7 +119,7 @@ class Rate_The_Site_Experience_Admin {
 		$download_path = $message = '';
 		if(isset($_POST['rtse-download-ratings-sheet-btn']) && !empty($_POST['rtse-download-ratings-sheet-btn']))
 		{
-			if ( ! isset( $_POST['rtse_download_sheet_nonce'] ) || ! wp_verify_nonce( $_POST['rtse_download_sheet_nonce'], 'rtse_download_sheet' ) ) 
+			if ( ! isset( $_POST['rtse_download_sheet_nonce'] ) || ! wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['rtse_download_sheet_nonce'])), 'rtse_download_sheet' ) ) 
 			{
 				print 'Sorry, your nonce did not verify.';
 				exit;
@@ -143,7 +143,9 @@ class Rate_The_Site_Experience_Admin {
 			}
 			if(!empty($logText))
 			{
-				$log_dir = ABSPATH . 'wp-content/uploads/rtse-ratings-csv/';
+				#$log_dir = ABSPATH . 'wp-content/uploads/rtse-ratings-csv/';
+				$upload_dir   = wp_upload_dir();
+				$log_dir = $upload_dir['basedir'] . '/rtse-ratings-csv/';
 			
 				$currentYear = date('Y');
 				$currentMonth = date('m');     
@@ -156,7 +158,8 @@ class Rate_The_Site_Experience_Admin {
 				}
 
 				$logFile = fopen($logPath.'/'.$logfilename.'.csv', 'w');
-				$log_url = site_url(). '/wp-content/uploads/rtse-ratings-csv/';
+				#$log_url = site_url(). '/wp-content/uploads/rtse-ratings-csv/';
+				$log_url = $upload_dir['baseurl']. '/rtse-ratings-csv/';
 				$logurlPath = $log_url.''.$currentYear.'/'.$currentMonth.'/'.$currentDay;
 				$download_path = $logurlPath.'/'.$logfilename.'.csv';
 				fwrite($logFile, $logText);
@@ -172,7 +175,7 @@ class Rate_The_Site_Experience_Admin {
 			<p><?php esc_html_e('Generate and download Ratings sheet.', 'rate-the-site-experience'); ?></p>
 			<?php wp_nonce_field( 'rtse_download_sheet', 'rtse_download_sheet_nonce' ); ?>
 			<input type="submit" Class="button button-primary" id="rtse-download-ratings-sheet-btn" name="rtse-download-ratings-sheet-btn" value="Download">
-			<?php echo $message; ?>
+			<?php echo wp_kses_post	($message); ?>
 			<?php 
 			if($download_path)
 			{
@@ -217,19 +220,19 @@ class Rate_The_Site_Experience_Admin {
 					
 						
 						if (isset($_POST['rtse-widget-settings']) && !empty($_POST['rtse-widget-settings'])) {
-							$rtse_widget_post_settings = !empty( $_POST['rtse-widget-settings'] ) ? sanitize_array((array) $_POST['rtse-widget-settings']) : array();
+							$rtse_widget_post_settings = !empty( $_POST['rtse-widget-settings'] ) ? (array)$_POST['rtse-widget-settings'] : array();
 							$rtse_widget_post_settings = array_map( 'esc_attr', $rtse_widget_post_settings );
 							update_option('rtse-widget-settings', $rtse_widget_post_settings);
 						}
 						
 						if (isset($_POST['rtse-widget-content']) && !empty($_POST['rtse-widget-content'])) {
-							$rtse_widget_post_content = !empty( $_POST['rtse-widget-content'] ) ? sanitize_array((array) $_POST['rtse-widget-content']) : array();
+							$rtse_widget_post_content = !empty( $_POST['rtse-widget-content'] ) ? (array)$_POST['rtse-widget-content'] : array();
 							$rtse_widget_post_content = array_map( 'esc_attr', $rtse_widget_post_content );
 							update_option('rtse-widget-content', $rtse_widget_post_content);
 						}
 						
 						if (isset($_POST['rtse-thankyou-widget-content']) && !empty($_POST['rtse-thankyou-widget-content'])) {
-							$rtse_thankyou_widget_post_content = !empty( $_POST['rtse-thankyou-widget-content'] ) ? sanitize_array((array) $_POST['rtse-thankyou-widget-content']) : array();
+							$rtse_thankyou_widget_post_content = !empty( $_POST['rtse-thankyou-widget-content'] ) ? (array)$_POST['rtse-thankyou-widget-content'] : array();
 							$rtse_thankyou_widget_post_content = array_map( 'esc_attr', $rtse_thankyou_widget_post_content );
 							update_option('rtse-thankyou-widget-content', $rtse_thankyou_widget_post_content);
 						}
@@ -346,7 +349,7 @@ class Rate_The_Site_Experience_Admin {
 									$enable_setting_wrap = '';
 								}
 								?>
-								<div id="rtse-widget-setting-wrap"  style="<?php echo $enable_setting_wrap; ?>">
+								<div id="rtse-widget-setting-wrap"  style="<?php echo esc_html($enable_setting_wrap); ?>">
 									<!-- widget content -->
 									<h3><?php esc_html_e('Widget Setting','rate-the-site-experience'); ?></h3>
 									<table>
@@ -376,7 +379,7 @@ class Rate_The_Site_Experience_Admin {
 												</td>
 											</tr>
 											<tr valign="top">
-												<th scope="row"><label for="rtse-widget-settings-nodd"><?php _e('Number of Days Decline','rate-the-site-experience'); ?></label></th>
+												<th scope="row"><label for="rtse-widget-settings-nodd"><?php esc_html_e('Number of Days Decline','rate-the-site-experience'); ?></label></th>
 												<td>
 													<input type="number" name="rtse-widget-settings[number_of_days_decline]" id="rtse-widget-settings-nodd" value="<?php echo esc_attr($number_of_days_decline); ?>" />
 													<span><?php esc_html_e('set a number of day to display widget after declined.','rate-the-site-experience'); ?></span>

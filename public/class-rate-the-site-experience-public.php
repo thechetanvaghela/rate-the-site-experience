@@ -206,7 +206,7 @@ class Rate_The_Site_Experience_Public {
 												$logo_img_src = $logo_img[0];
 												?>
 												<div class="rtse-rating-widget-logo">
-													<img src="<?php echo esc_url($logo_img_src); ?>" title="<?php _e('Rate the Site','rate-the-site-experience'); ?>" alt="<?php _e('Rate the Site','rate-the-site-experience'); ?>">
+													<img src="<?php echo esc_url($logo_img_src); ?>" title="<?php esc_html_e('Rate the Site','rate-the-site-experience'); ?>" alt="<?php esc_html_e('Rate the Site','rate-the-site-experience'); ?>">
 												</div>
 												<?php 
 											}
@@ -264,7 +264,7 @@ class Rate_The_Site_Experience_Public {
 										</a>
 									</div>
 									<div id="RTSEPleaseWaitMsgPopup">
-										<span  class="rtse-wait-msg"><?php echo __('Please Wait...','rate-the-site-experience'); ?></span>
+										<span  class="rtse-wait-msg"><?php esc_html_e('Please Wait...','rate-the-site-experience'); ?></span>
 									</div>
 								</div>
 							</div>
@@ -337,7 +337,7 @@ class Rate_The_Site_Experience_Public {
 	public function rtse_save_ratings_callback()
 	{
 
-		if ( ! isset( $_POST['rtse_save_rating_nonce'] ) || ! wp_verify_nonce( $_POST['rtse_save_rating_nonce'], 'rtse_save_rating' ) ) 
+		if ( ! isset( $_POST['rtse_save_rating_nonce'] ) || ! wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['rtse_save_rating_nonce'])), 'rtse_save_rating' ) ) 
 		{
 			$return = array(
 				'status' => 'error',
@@ -388,7 +388,7 @@ function rtse_get_client_ip() {
     {
         if (array_key_exists($key, $_SERVER) === true)
         {
-            foreach (array_map('trim', explode(',', $_SERVER[$key])) as $ip)
+            foreach (array_map('trim', explode(',', esc_html($_SERVER[$key]))) as $ip)
             {
                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false)
                 {
