@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'RATE_THE_SITE_EXPERIENCE_VERSION', '1.0.0' );
+define( 'RTSE_RATE_THE_SITE_EXPERIENCE_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.
@@ -43,7 +43,7 @@ define( 'RATE_THE_SITE_EXPERIENCE_VERSION', '1.0.0' );
  */
 function rtse_activate_rate_the_site_experience() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-rate-the-site-experience-activator.php';
-	Rate_The_Site_Experience_Activator::activate();
+	RTSE_Rate_The_Site_Experience_Activator::activate();
 }
 
 /**
@@ -52,7 +52,7 @@ function rtse_activate_rate_the_site_experience() {
  */
 function rtse_deactivate_rate_the_site_experience() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-rate-the-site-experience-deactivator.php';
-	Rate_The_Site_Experience_Deactivator::deactivate();
+	RTSE_Rate_The_Site_Experience_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'rtse_activate_rate_the_site_experience' );
@@ -75,7 +75,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-rate-the-site-experience.p
  */
 function rtse_run_rate_the_site_experience() {
 
-	$plugin = new Rate_The_Site_Experience();
+	$plugin = new RTSE_Rate_The_Site_Experience();
 	$plugin->run();
 
 }

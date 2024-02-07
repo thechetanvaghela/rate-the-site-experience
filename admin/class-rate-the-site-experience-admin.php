@@ -6,8 +6,8 @@
  * @link       https://profiles.wordpress.org/thechetanvaghela/
  * @since      1.0.0
  *
- * @package    Rate_The_Site_Experience
- * @subpackage Rate_The_Site_Experience/admin
+ * @package    RTSE_Rate_The_Site_Experience
+ * @subpackage RTSE_Rate_The_Site_Experience/admin
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Rate_The_Site_Experience
- * @subpackage Rate_The_Site_Experience/admin
+ * @package    RTSE_Rate_The_Site_Experience
+ * @subpackage RTSE_Rate_The_Site_Experience/admin
  * @author     Chetan Vaghela <ckvaghela92@gmail.com>
  */
-class Rate_The_Site_Experience_Admin {
+class RTSE_Rate_The_Site_Experience_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -65,10 +65,10 @@ class Rate_The_Site_Experience_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Rate_The_Site_Experience_Loader as all of the hooks are defined
+		 * defined in RTSE_Rate_The_Site_Experience_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Rate_The_Site_Experience_Loader will then create the relationship
+		 * The RTSE_Rate_The_Site_Experience_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
@@ -88,10 +88,10 @@ class Rate_The_Site_Experience_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Rate_The_Site_Experience_Loader as all of the hooks are defined
+		 * defined in RTSE_Rate_The_Site_Experience_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Rate_The_Site_Experience_Loader will then create the relationship
+		 * The RTSE_Rate_The_Site_Experience_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
@@ -220,19 +220,19 @@ class Rate_The_Site_Experience_Admin {
 					
 						
 						if (isset($_POST['rtse-widget-settings']) && !empty($_POST['rtse-widget-settings'])) {
-							$rtse_widget_post_settings = !empty( $_POST['rtse-widget-settings'] ) ? (array)$_POST['rtse-widget-settings'] : array();
+							$rtse_widget_post_settings = !empty( $_POST['rtse-widget-settings'] ) ? array_map('filter_var',$_POST['rtse-widget-settings']) : array();
 							$rtse_widget_post_settings = array_map( 'esc_attr', $rtse_widget_post_settings );
 							update_option('rtse-widget-settings', $rtse_widget_post_settings);
 						}
 						
 						if (isset($_POST['rtse-widget-content']) && !empty($_POST['rtse-widget-content'])) {
-							$rtse_widget_post_content = !empty( $_POST['rtse-widget-content'] ) ? (array)$_POST['rtse-widget-content'] : array();
+							$rtse_widget_post_content = !empty( $_POST['rtse-widget-content'] ) ? array_map('filter_var',$_POST['rtse-widget-content']) : array();
 							$rtse_widget_post_content = array_map( 'esc_attr', $rtse_widget_post_content );
 							update_option('rtse-widget-content', $rtse_widget_post_content);
 						}
 						
 						if (isset($_POST['rtse-thankyou-widget-content']) && !empty($_POST['rtse-thankyou-widget-content'])) {
-							$rtse_thankyou_widget_post_content = !empty( $_POST['rtse-thankyou-widget-content'] ) ? (array)$_POST['rtse-thankyou-widget-content'] : array();
+							$rtse_thankyou_widget_post_content = !empty( $_POST['rtse-thankyou-widget-content'] ) ? array_map('filter_var',$_POST['rtse-thankyou-widget-content']) : array();
 							$rtse_thankyou_widget_post_content = array_map( 'esc_attr', $rtse_thankyou_widget_post_content );
 							update_option('rtse-thankyou-widget-content', $rtse_thankyou_widget_post_content);
 						}

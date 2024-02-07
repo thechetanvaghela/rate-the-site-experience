@@ -22,7 +22,7 @@
  * @link       https://profiles.wordpress.org/thechetanvaghela/
  * @since      1.0.0
  *
- * @package    Rate_The_Site_Experience
+ * @package    RTSE_Rate_The_Site_Experience
  */
 
 // If uninstall not called from WordPress, then exit.

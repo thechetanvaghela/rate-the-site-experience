@@ -6,8 +6,8 @@
  * @link       https://profiles.wordpress.org/thechetanvaghela/
  * @since      1.0.0
  *
- * @package    Rate_The_Site_Experience
- * @subpackage Rate_The_Site_Experience/public
+ * @package    RTSE_Rate_The_Site_Experience
+ * @subpackage RTSE_Rate_The_Site_Experience/public
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
- * @package    Rate_The_Site_Experience
- * @subpackage Rate_The_Site_Experience/public
+ * @package    RTSE_Rate_The_Site_Experience
+ * @subpackage RTSE_Rate_The_Site_Experience/public
  * @author     Chetan Vaghela <ckvaghela92@gmail.com>
  */
-class Rate_The_Site_Experience_Public {
+class RTSE_Rate_The_Site_Experience_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -65,10 +65,10 @@ class Rate_The_Site_Experience_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Rate_The_Site_Experience_Loader as all of the hooks are defined
+		 * defined in RTSE_Rate_The_Site_Experience_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Rate_The_Site_Experience_Loader will then create the relationship
+		 * The RTSE_Rate_The_Site_Experience_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
@@ -88,10 +88,10 @@ class Rate_The_Site_Experience_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Rate_The_Site_Experience_Loader as all of the hooks are defined
+		 * defined in RTSE_Rate_The_Site_Experience_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Rate_The_Site_Experience_Loader will then create the relationship
+		 * The RTSE_Rate_The_Site_Experience_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
@@ -388,7 +388,7 @@ function rtse_get_client_ip() {
     {
         if (array_key_exists($key, $_SERVER) === true)
         {
-            foreach (array_map('trim', explode(',', esc_html($_SERVER[$key]))) as $ip)
+            foreach (array_map('trim', explode(',',  esc_html(sanitize_text_field($_SERVER[$key])))) as $ip)
             {
                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false)
                 {

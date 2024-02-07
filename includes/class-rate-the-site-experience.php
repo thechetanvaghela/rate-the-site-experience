@@ -9,8 +9,8 @@
  * @link       https://profiles.wordpress.org/thechetanvaghela/
  * @since      1.0.0
  *
- * @package    Rate_The_Site_Experience
- * @subpackage Rate_The_Site_Experience/includes
+ * @package    RTSE_Rate_The_Site_Experience
+ * @subpackage RTSE_Rate_The_Site_Experience/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Rate_The_Site_Experience
- * @subpackage Rate_The_Site_Experience/includes
+ * @package    RTSE_Rate_The_Site_Experience
+ * @subpackage RTSE_Rate_The_Site_Experience/includes
  * @author     Chetan Vaghela <ckvaghela92@gmail.com>
  */
-class Rate_The_Site_Experience {
+class RTSE_Rate_The_Site_Experience {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +35,7 @@ class Rate_The_Site_Experience {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Rate_The_Site_Experience_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      RTSE_Rate_The_Site_Experience_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -67,8 +67,8 @@ class Rate_The_Site_Experience {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'RATE_THE_SITE_EXPERIENCE_VERSION' ) ) {
-			$this->version = RATE_THE_SITE_EXPERIENCE_VERSION;
+		if ( defined( 'RTSE_RATE_THE_SITE_EXPERIENCE_VERSION' ) ) {
+			$this->version = RTSE_RATE_THE_SITE_EXPERIENCE_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
@@ -86,10 +86,10 @@ class Rate_The_Site_Experience {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Rate_The_Site_Experience_Loader. Orchestrates the hooks of the plugin.
-	 * - Rate_The_Site_Experience_i18n. Defines internationalization functionality.
-	 * - Rate_The_Site_Experience_Admin. Defines all hooks for the admin area.
-	 * - Rate_The_Site_Experience_Public. Defines all hooks for the public side of the site.
+	 * - RTSE_Rate_The_Site_Experience_Loader. Orchestrates the hooks of the plugin.
+	 * - RTSE_Rate_The_Site_Experience_i18n. Defines internationalization functionality.
+	 * - RTSE_Rate_The_Site_Experience_Admin. Defines all hooks for the admin area.
+	 * - RTSE_Rate_The_Site_Experience_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -122,14 +122,14 @@ class Rate_The_Site_Experience {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-rate-the-site-experience-public.php';
 
-		$this->loader = new Rate_The_Site_Experience_Loader();
+		$this->loader = new RTSE_Rate_The_Site_Experience_Loader();
 
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Rate_The_Site_Experience_i18n class in order to set the domain and to register the hook
+	 * Uses the RTSE_Rate_The_Site_Experience_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -137,7 +137,7 @@ class Rate_The_Site_Experience {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Rate_The_Site_Experience_i18n();
+		$plugin_i18n = new RTSE_Rate_The_Site_Experience_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -152,7 +152,7 @@ class Rate_The_Site_Experience {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Rate_The_Site_Experience_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new RTSE_Rate_The_Site_Experience_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -173,7 +173,7 @@ class Rate_The_Site_Experience {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Rate_The_Site_Experience_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new RTSE_Rate_The_Site_Experience_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -212,7 +212,7 @@ class Rate_The_Site_Experience {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Rate_The_Site_Experience_Loader    Orchestrates the hooks of the plugin.
+	 * @return    RTSE_Rate_The_Site_Experience_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;

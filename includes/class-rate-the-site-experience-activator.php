@@ -6,8 +6,8 @@
  * @link       https://profiles.wordpress.org/thechetanvaghela/
  * @since      1.0.0
  *
- * @package    Rate_The_Site_Experience
- * @subpackage Rate_The_Site_Experience/includes
+ * @package    RTSE_Rate_The_Site_Experience
+ * @subpackage RTSE_Rate_The_Site_Experience/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    Rate_The_Site_Experience
- * @subpackage Rate_The_Site_Experience/includes
+ * @package    RTSE_Rate_The_Site_Experience
+ * @subpackage RTSE_Rate_The_Site_Experience/includes
  * @author     Chetan Vaghela <ckvaghela92@gmail.com>
  */
-class Rate_The_Site_Experience_Activator {
+class RTSE_Rate_The_Site_Experience_Activator {
 
 	/**
 	 * Short Description. (use period)

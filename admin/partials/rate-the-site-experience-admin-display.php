@@ -8,8 +8,8 @@
  * @link       https://profiles.wordpress.org/thechetanvaghela/
  * @since      1.0.0
  *
- * @package    Rate_The_Site_Experience
- * @subpackage Rate_The_Site_Experience/admin/partials
+ * @package    RTSE_Rate_The_Site_Experience
+ * @subpackage RTSE_Rate_The_Site_Experience/admin/partials
  */
 ?>
 

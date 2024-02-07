@@ -6,8 +6,8 @@
  * @link       https://profiles.wordpress.org/thechetanvaghela/
  * @since      1.0.0
  *
- * @package    Rate_The_Site_Experience
- * @subpackage Rate_The_Site_Experience/includes
+ * @package    RTSE_Rate_The_Site_Experience
+ * @subpackage RTSE_Rate_The_Site_Experience/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Rate_The_Site_Experience
- * @subpackage Rate_The_Site_Experience/includes
+ * @package    RTSE_Rate_The_Site_Experience
+ * @subpackage RTSE_Rate_The_Site_Experience/includes
  * @author     Chetan Vaghela <ckvaghela92@gmail.com>
  */
-class Rate_The_Site_Experience_Loader {
+class RTSE_Rate_The_Site_Experience_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.
