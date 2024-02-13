@@ -220,19 +220,19 @@ class RTSE_Rate_The_Site_Experience_Admin {
 					
 						
 						if (isset($_POST['rtse-widget-settings']) && !empty($_POST['rtse-widget-settings'])) {
-							$rtse_widget_post_settings = !empty( $_POST['rtse-widget-settings'] ) ? array_map('filter_var',$_POST['rtse-widget-settings']) : array();
+							$rtse_widget_post_settings = !empty( $_POST['rtse-widget-settings'] ) ? array_map('sanitize_text_field',$_POST['rtse-widget-settings']) : array();
 							$rtse_widget_post_settings = array_map( 'esc_attr', $rtse_widget_post_settings );
 							update_option('rtse-widget-settings', $rtse_widget_post_settings);
 						}
 						
 						if (isset($_POST['rtse-widget-content']) && !empty($_POST['rtse-widget-content'])) {
-							$rtse_widget_post_content = !empty( $_POST['rtse-widget-content'] ) ? array_map('filter_var',$_POST['rtse-widget-content']) : array();
+							$rtse_widget_post_content = !empty( $_POST['rtse-widget-content'] ) ? array_map('sanitize_text_field',$_POST['rtse-widget-content']) : array();
 							$rtse_widget_post_content = array_map( 'esc_attr', $rtse_widget_post_content );
 							update_option('rtse-widget-content', $rtse_widget_post_content);
 						}
 						
 						if (isset($_POST['rtse-thankyou-widget-content']) && !empty($_POST['rtse-thankyou-widget-content'])) {
-							$rtse_thankyou_widget_post_content = !empty( $_POST['rtse-thankyou-widget-content'] ) ? array_map('filter_var',$_POST['rtse-thankyou-widget-content']) : array();
+							$rtse_thankyou_widget_post_content = !empty( $_POST['rtse-thankyou-widget-content'] ) ? array_map('sanitize_text_field',$_POST['rtse-thankyou-widget-content']) : array();
 							$rtse_thankyou_widget_post_content = array_map( 'esc_attr', $rtse_thankyou_widget_post_content );
 							update_option('rtse-thankyou-widget-content', $rtse_thankyou_widget_post_content);
 						}
