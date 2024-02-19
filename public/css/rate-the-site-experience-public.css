@@ -38,6 +38,8 @@
   }
   .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content .rtse-rating-widget-logo img {
     max-width: 80px;
+    margin: auto;
+    display: block;
   }
   .rtse-rating-widget .rtse-rating-widget-inner .rtse-widget-content h2 {
     text-align: center;
